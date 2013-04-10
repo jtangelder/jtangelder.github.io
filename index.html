@@ -3,11 +3,9 @@ layout: default
 title: Jorik Tangelder
 ---
 
-<h1>Reports on the Reverse</h1>
-<ul class="posts">
+<p class="lead">Thanks for visiting my uninteresting blog.</p>
+<ul>
 {% for post in site.posts %}
-	<li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+	<li><a href="{{ post.url }}">{{ post.date|date_to_long_string }} - {{ post.title }}</a></li>
 {% endfor %}
 </ul>
-
-
