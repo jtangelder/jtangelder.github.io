@@ -2,8 +2,6 @@
 layout: default
 ---
 
-<div id="post">
-    <h2>{{ page.title }}</h2>
-    <time>{{ page.date|date_to_long_string }}</time>
-    {{ content }}
-</div>
+<h3>{{ page.title }}</h3>
+<time>{{ page.date|date_to_long_string }}</time>
+{{ content }}
