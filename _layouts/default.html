@@ -8,8 +8,13 @@
 
     <title>{{ page.title }}</title>
     <style>
-        body { padding: 25px; }
-        time { color: #999; }
+        body {
+            padding: 25px;
+            background: beige;
+            text-shadow: 1px 1px rgba(255,255,255,.3);
+        }
+
+        time { color: #666; }
         .container {
             max-width: 750px;
             width: auto;
@@ -19,6 +24,8 @@
         .content {
             margin-left: 250px;
         }
+
+        .header strong { color:#333;}
 
         .content article {
             margin-bottom: 50px;
@@ -39,6 +46,7 @@
             height: 40px;
             width: 40px;
             margin-right: 15px;
+            border: solid 2px #fff;
         }
 
         .nav ul {
@@ -64,7 +72,7 @@
     <div class="container">
         <nav class="nav">
             <img src="http://1.gravatar.com/avatar/1710309274f44890877a9ddfc2501888" class="me">
-            <p><a href="/"><strong>Jorik Tangelder</strong></a><br>
+            <p class="header"><a href="/"><strong>Jorik Tangelder</strong></a><br>
                 <a href="http://twitter.com/jorikdelaporik">@jorikdelaporik</a></p>
 
             <ul>
@@ -78,5 +86,7 @@
             {{ content }}
         </section>
     </div>
+
+    <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 </body>
 </html>
