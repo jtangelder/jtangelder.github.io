@@ -1,3 +1,7 @@
+deploy:
+	@echo "Deploy"
+	ssh -t deploy@joriktangelder.nl 'cd joriktangelder.nl && make update'
+
 update:
 	@echo "Update"
 	git pull
