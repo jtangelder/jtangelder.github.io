@@ -6,9 +6,16 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,300' rel='stylesheet' type='text/css'>
     <style>
         
+        html, body {
+            height: 100%;
+            min-height: 100%;
+        }
+        
         body {
+            background: #333;
+            color: #fff;
             margin: 40px;
-            font: 300 18px/30px 'Open Sans', Helvetica, Arial, sans-serif;
+            font: 300 22px/30px 'Open Sans', Helvetica, Arial, sans-serif;
             text-align: center;
         }
         
@@ -27,16 +34,27 @@
             margin: 0 10px;
         }
         
+        div {
+            position: absolute;
+            width: 100%;
+            max-width: 800px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
     </style>
 </head>
 <body>
-    <h1>Hi,</h1>
-    <p>I'm Jorik Tangelder, and I love to code pretty things and enjoy playing guitar.</p>
-    <p>I'm currently working at <a href="https://blendle.com">Blendle</a> as a front-end engineer.</p>
-    <ul>
-        <li><a href="https://twitter.com/jorikdelaporik">Twitter @jorikdelaporik</a></li>
-        <li><a href="https://www.linkedin.com/in/joriktangelder">LinkedIn</a></li>
-        <li><a href="https://github.com/jtangelder">Github</a>
-    </ul>      
+    <div>
+        <h1>Hi,</h1>
+        <p>I'm Jorik Tangelder, and I love to code pretty things and enjoy playing guitar.</p>
+        <p>I'm currently working at <a href="https://blendle.com">Blendle</a> as a front-end engineer.</p>
+        <ul>
+            <li><a href="https://twitter.com/jorikdelaporik">Twitter @jorikdelaporik</a></li>
+            <li><a href="https://www.linkedin.com/in/joriktangelder">LinkedIn</a></li>
+            <li><a href="https://github.com/jtangelder">Github</a>
+        </ul>    
+    </div>
 </body>
 </html>
