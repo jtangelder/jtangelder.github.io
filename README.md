@@ -1,3 +1,6 @@
-My personal website. 
-
-http://www.joriktangelder.nl
+````
+gem install bundler
+bundle install
+make
+open http://localhost:4000
+````
