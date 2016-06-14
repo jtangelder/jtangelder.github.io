@@ -1,24 +1,99 @@
----
-layout: default
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jorik Tangelder</title>
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:700" rel="stylesheet">
+  <style>
 
-<div class="home">
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
-        <p class="post-meta">
-          {{ post.date | date: "%b %-d, %Y" }}
-          {% if post.author %} • {{ post.author }}{% endif %}
-          {% if post.meta %} • {{ post.meta }}{% endif %}
-        </p>
+    *, :after, :before {
+      box-sizing: border-box;
+    }
 
-        <article class="post-content">
-          {{ post.content }}
-        </article>
-      </li>
-    {% endfor %}
+    html, body {
+      height: 100%;
+      min-height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      font: 1.4em 'Source Sans Pro', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #4c75b3;
+    }
+
+    h1 {
+      font-size: 1.7em;
+      margin: 0 0 .5em 0;
+      color: #fff;
+    }
+
+    a {
+      color: #fff;
+      text-decoration: none;
+      border-bottom: .1em solid rgba(255,255,255,.6);
+      transition: all .1s;
+    }
+
+    a:hover {
+      border-bottom-color: #fff;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      justify-content: center;
+    }
+
+    li {
+      margin: 0 .5em;
+    }
+
+  </style>
+</head>
+<body>
+
+<section>
+  <h1>Jorik Tangelder</h1>
+  <ul>
+    <li><a href="https://twitter.com/jorikdelaporik">Twitter</a></li>
+    <li><a href="https://linkedin.com/in/joriktangelder">LinkedIn</a></li>
+    <li><a href="https://github.com/jtangelder">GitHub</a></li>
   </ul>
-</div>
+</section>
+
+<script>
+
+  const winSize = {};
+  function updateWindowSize () {
+    winSize.width = window.innerWidth;
+    winSize.height = window.innerHeight;
+  }
+
+  function getHSL(x, y) {
+    const hue = (250 / winSize.width) * x;
+    const sat = ((25 / winSize.height) * y) + 25;
+    return 'hsl('+ hue +', '+ (sat) +'%, 50%)';
+  }
+
+  function updateBackground(ev) {
+    document.body.style.background = getHSL(ev.clientX, ev.clientY);
+  }
+
+  updateWindowSize();
+  window.addEventListener('resize', updateWindowSize);
+
+  ['mousemove', 'touchstart', 'touchmove'].forEach(function(name) {
+    window.addEventListener(name, updateBackground);
+  });
+
+</script>
+
+</body>
+</html>
