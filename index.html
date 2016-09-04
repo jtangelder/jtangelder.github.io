@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Jorik Tangelder</title>
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
   <style>
 
     *, :after, :before {
@@ -19,11 +19,11 @@
     }
 
     body {
-      font: 1.4em 'Source Sans Pro', sans-serif;
+      font: 2em 'Slabo 27px', serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #4c75b3;
+      background: tomato;
     }
 
     h1 {
@@ -65,33 +65,6 @@
     <li><a href="https://linkedin.com/in/joriktangelder">LinkedIn</a></li>
     <li><a href="https://github.com/jtangelder">GitHub</a></li>
   </ul>
-
-<script>
-
-  const winSize = {};
-  function updateWindowSize () {
-    winSize.width = window.innerWidth;
-    winSize.height = window.innerHeight;
-  }
-
-  function getHSL(x, y) {
-    const hue = (250 / winSize.width) * x;
-    const sat = ((25 / winSize.height) * y) + 25;
-    return 'hsl('+ hue +', '+ (sat) +'%, 50%)';
-  }
-
-  function updateBackground(ev) {
-    document.body.style.background = getHSL(ev.clientX, ev.clientY);
-  }
-
-  updateWindowSize();
-  window.addEventListener('resize', updateWindowSize);
-
-  ['mousemove', 'touchstart', 'touchmove'].forEach(function(name) {
-    window.addEventListener(name, updateBackground);
-  });
-
-</script>
 
 </body>
 </html>
