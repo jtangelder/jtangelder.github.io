@@ -5,26 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="darkslateblue">
   <title>Jorik Tangelder</title>
+  <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
   <style>
-    html, body { 
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      min-height: 100%;
       height: 100%;
-      padding: 0;
       margin: 0;
-    }    
+      padding: 0;
+    }
     body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-family: Georgia, Times, Times New Roman, serif;
-      font-style: italic;
+      font: 1em/1.6 'Space Mono', monospace;
       background: darkslateblue;
     }
     body, a {
       color: #fff;
     }
-    h1 {
-      font-weight: normal;
+    article {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2% 10%;
     }
     ul {
       margin: 0;
@@ -33,17 +35,34 @@
     }
     li {
       margin: 10px 0;
-    }  
+    }
+    @media (min-width: 420px) {
+      body {
+        font-size: 1.3em;
+      }
+    }
+    @media (min-height: 600px) and (min-width: 400px) {
+      body {
+        display: flex;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 <body>
-  
-  <h1>About me</h1>
-  <ul>
-    <li><a href="https://twitter.com/jorikdelaporik">Twitter</a></li>
-    <li><a href="https://linkedin.com/in/joriktangelder">LinkedIn</a></li>
-    <li><a href="https://github.com/jtangelder">GitHub</a></li>
-  </ul>
+
+  <article>
+    <p>
+      Hi! I'm a UX Frontend Engineer and want to build the best possible web with focus on
+      interactions and accessibility.
+    </p>
+    <p>Find out more about me on the following platforms:</p>
+    <ul>
+      <li><a href="https://twitter.com/jorikdelaporik">Twitter</a></li>
+      <li><a href="https://linkedin.com/in/joriktangelder">LinkedIn</a></li>
+      <li><a href="https://github.com/jtangelder">GitHub</a></li>
+    </ul>
+  </article>
   
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
