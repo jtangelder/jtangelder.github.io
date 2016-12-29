@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
+<head>  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="darkslateblue">
   <title>WCAG color contrast calculator</title>
   <link href="https://fonts.googleapis.com/css?family=Space+Mono:400,700" rel="stylesheet">
   <style>
@@ -136,8 +138,8 @@ function round(number, precision) {
 function getLuminance(rgb) {
   // see https://www.w3.org/TR/WCAG/#relativeluminancedef
   const [r, g, b] = rgb
-  	.map(c => c / 255)
-  	.map(c => ((c <= 0.03928) ? (c / 12.92) : (((c + 0.055) / 1.055) ** 2.4)));
+    .map(c => c / 255)
+    .map(c => ((c <= 0.03928) ? (c / 12.92) : (((c + 0.055) / 1.055) ** 2.4)));
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
@@ -168,15 +170,15 @@ function getWCAGScores(contrast) {
 }
 
 function select(selector, context = document) {
-	return context.querySelector(selector);
+  return context.querySelector(selector);
 }
 
 function setText(text, selector, context = document) {
-	context.querySelector(selector).textContent = text;
+  context.querySelector(selector).textContent = text;
 }
 
 function onSubmitForm(ev) {
-	ev.preventDefault();
+  ev.preventDefault();
 
   const color1 = ev.target.color1.value.trim();
   const color2 = ev.target.color2.value.trim();  
@@ -186,17 +188,18 @@ function onSubmitForm(ev) {
   select('body').style.background = color1;
   select('body').style.color = color2;
   select('body').style.borderColor = color2;
+  select('meta[name="theme-color"]').content = color1;
   
   setText(contrastRatio, '.ratio');
   
   Object.keys(scores).forEach(level => {
-  	const row = select(`tr.level-${level}`);
+    const row = select(`tr.level-${level}`);
     Object.keys(scores[level]).forEach(type => {
-    	const result = scores[level][type];
-    	const cell = select(`td.${type}`, row);
+      const result = scores[level][type];
+      const cell = select(`td.${type}`, row);
       
-    	setText(result.score, `.score`, cell);
-    	setText(result.minimal, `.minimal`, cell);
+      setText(result.score, `.score`, cell);
+      setText(result.minimal, `.minimal`, cell);
       
       cell.classList.remove('false', 'true');
       cell.classList.add(result.score);
