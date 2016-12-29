@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>WCAG color contrast calculator</title>
+  <link href="https://fonts.googleapis.com/css?family=Space+Mono:400,700" rel="stylesheet">
+  <style>
+    body, input, button {
+      font: 1em/1.6 'Space Mono', monospace;
+      box-sizing: border-box;
+    }
+
+    input, button {
+      padding: .3em .6em;
+      background: inherit;
+      color: inherit;
+      border-color: inherit;
+    }
+
+    button {
+      border: solid 1px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    input {
+      border: none;
+      border-width: 0;
+      border-bottom: solid 1px;
+    }
+
+    input:focus,
+    button:focus {
+      outline: none;
+      border-style: dotted;
+    }
+
+    body {
+      background: #eee;
+      color: #000;
+      padding: .5em 1em;
+      transition: all .3s;
+    }
+
+    a { 
+      color: inherit; 
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .help {
+      cursor: help;
+    }
+
+    label {
+      display: block;
+      margin: .8em 0;
+      font-weight: bold;
+    }
+
+    td, th {
+      padding: .5em;
+      transition: background .3s;
+    }
+
+    td.true {
+      background: green;
+      color: #fff;
+    }
+
+    td.false {
+      background: #c00;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<h1>WCAG color contrast calculator</h1>
+<p>Find out if the colors are OK with the defined minimums of the <a href="https://www.w3.org/TR/WCAG/#visual-audio-contrast">WCAG rules</a>.</p>
+
+<form id="calculator">
+  <p>
+    <label>Background: <input type="text" name="color1" value="darkslateblue" autofocus /></label>
+    <label>Foreground: <input type="text" name="color2" value="#fff" /></label>
+    <button type="submit">Calculate</button>
+  </p>
+</form>
+  
+<hr />
+  
+<section id="results" class="hidden">
+  <h1>Contrast ratio of <span class='ratio'></span></h1>
+  <table>
+    <tr>
+      <th>WCAG level</th>
+      <th>Regular text</th>
+      <th>Large text</th>
+    </tr>
+    <tr class="level-a">
+      <td>A</td>
+      <td class="regular"><span class="score"></span> (<span class="minimal"></span>)</td>
+      <td class="large"><span class="score"></span> (<span class="minimal"></span>)</td>
+    </tr>
+    <tr class="level-aa">
+      <td>AA</td>
+      <td class="regular"><span class="score"></span> (<span class="minimal"></span>)</td>
+      <td class="large"><span class="score"></span> (<span class="minimal"></span>)</td>
+    </tr>
+    <tr class="level-aaa">
+      <td>AAA</td>
+      <td class="regular"><span class="score"></span> (<span class="minimal"></span>)</td>
+      <td class="large"><span class="score"></span> (<span class="minimal"></span>)</td>
+    </tr>
+  </table>
+</section>
+<script>
+
+function colorToRGB(color) {
+  const canvas = document.createElement('canvas');  
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, 1, 1); 
+  return Array.from(ctx.getImageData(0, 0, 1, 1).data).slice(0,3);
+}
+
+function round(number, precision) {
+  const factor = 10 ** precision;
+  return Math.round(number * factor) / factor;
+}
+
+function getLuminance(rgb) {
+  // see https://www.w3.org/TR/WCAG/#relativeluminancedef
+  const [r, g, b] = rgb
+  	.map(c => c / 255)
+  	.map(c => ((c <= 0.03928) ? (c / 12.92) : (((c + 0.055) / 1.055) ** 2.4)));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function getContrastRatio(color1, color2) {
+  // see https://www.w3.org/TR/WCAG/#contrast-ratiodef
+  const luminances = [
+    getLuminance(colorToRGB(color1)),
+    getLuminance(colorToRGB(color2))
+  ];      
+  const l1 = Math.max(...luminances);
+  const l2 = Math.min(...luminances);
+  return round((l1 + 0.05) / (l2 + 0.05), 2);
+}
+
+function getScore(contrast, minRegular, minLarge) {
+  return {
+    regular: { score: contrast >= minRegular, minimal: minRegular },
+    large: { score: contrast >= minLarge, minimal: minLarge }  
+  };
+}
+
+function getWCAGScores(contrast) {
+  return {
+    a: getScore(contrast, 1, 1),
+    aa: getScore(contrast, 4.5, 3),
+    aaa: getScore(contrast, 7, 4.5)
+  };
+}
+
+function select(selector, context = document) {
+	return context.querySelector(selector);
+}
+
+function setText(text, selector, context = document) {
+	context.querySelector(selector).textContent = text;
+}
+
+function onSubmitForm(ev) {
+	ev.preventDefault();
+
+  const color1 = ev.target.color1.value.trim();
+  const color2 = ev.target.color2.value.trim();  
+  const contrastRatio = getContrastRatio(color1, color2);
+  const scores = getWCAGScores(contrastRatio);
+  
+  select('body').style.background = color1;
+  select('body').style.color = color2;
+  select('body').style.borderColor = color2;
+  
+  setText(contrastRatio, '.ratio');
+  
+  Object.keys(scores).forEach(level => {
+  	const row = select(`tr.level-${level}`);
+    Object.keys(scores[level]).forEach(type => {
+    	const result = scores[level][type];
+    	const cell = select(`td.${type}`, row);
+      
+    	setText(result.score, `.score`, cell);
+    	setText(result.minimal, `.minimal`, cell);
+      
+      cell.classList.remove('false', 'true');
+      cell.classList.add(result.score);
+    });
+  });
+  
+  select('#results').classList.remove('hidden');
+}
+
+select('#calculator').onsubmit = onSubmitForm;
+
+</script>
+</body>
+</html>
