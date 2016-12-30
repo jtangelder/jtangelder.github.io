@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eee">
+  <title>WCAG color contrast calculator</title>
+  <link href="https://fonts.googleapis.com/css?family=Space+Mono:400,700" rel="stylesheet">
+  <link href="assets/main.css" rel="stylesheet">
+</head>
+<body>
+
+<h1>WCAG color contrast calculator</h1>
+<p>Find out if the colors are OK with the defined minimums of the <a href="https://www.w3.org/TR/WCAG/#visual-audio-contrast">WCAG rules</a>.</p>
+
+<form id="calculator">
+  <p>
+    <label>Background: <input type="text" name="color1" value="darkslateblue" autofocus /></label>
+    <label>Foreground: <input type="text" name="color2" value="rgba(255,255,255,.9)" /></label>
+    <button type="submit">Calculate</button>
+  </p>
+</form>
+  
+<section id="results" class="hidden">
+  <h1>Contrast ratio of <span class='ratio'></span></h1>
+  <table>
+    <tr>
+      <th>WCAG level</th>
+      <th>Regular text</th>
+      <th>Large text</th>
+    </tr>
+    <tr class="level-a">
+      <td>A</td>
+      <td class="regular"><span class="score"></span> (<span class="minimal"></span>)</td>
+      <td class="large"><span class="score"></span> (<span class="minimal"></span>)</td>
+    </tr>
+    <tr class="level-aa">
+      <td>AA</td>
+      <td class="regular"><span class="score"></span> (<span class="minimal"></span>)</td>
+      <td class="large"><span class="score"></span> (<span class="minimal"></span>)</td>
+    </tr>
+    <tr class="level-aaa">
+      <td>AAA</td>
+      <td class="regular"><span class="score"></span> (<span class="minimal"></span>)</td>
+      <td class="large"><span class="score"></span> (<span class="minimal"></span>)</td>
+    </tr>
+  </table>
+</section>
+<script src="assets/bundle.js"></script>
+</body>
+</html>

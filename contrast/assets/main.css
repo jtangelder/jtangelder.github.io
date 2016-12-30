@@ -1,0 +1,73 @@
+body, input, button {
+    font: 1em/1.6 'Space Mono', monospace;
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none;
+}
+
+.help {
+    cursor: help;
+}
+
+body {
+    background: #eee;
+    color: #000;
+    padding: .5em 1em;
+    transition: all .3s;
+}
+
+form {
+    margin-bottom: 4em;
+}
+
+input, button {
+    padding: .3em .6em;
+    background: inherit;
+    color: inherit;
+    border-color: inherit;
+}
+
+button {
+    border: solid 1px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+input {
+    border: none;
+    border-width: 0;
+    border-bottom: solid 1px;
+}
+
+input:focus,
+button:focus {
+    outline: none;
+    border-style: dotted;
+}
+
+a {
+    color: inherit;
+}
+
+label {
+    display: block;
+    margin: .8em 0;
+    font-weight: bold;
+}
+
+td, th {
+    padding: .5em;
+    transition: background .3s;
+}
+
+td.true {
+    background: green;
+    color: #fff;
+}
+
+td.false {
+    background: #c00;
+    color: #fff;
+}
