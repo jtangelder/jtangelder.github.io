@@ -1,34 +1,7 @@
+import { MAP_CENTER } from './constants';
 import { StationMarker, MARKER_WIDTH, MARKER_HEIGHT } from './StationMarker';
 import { getStationLatLng } from './api';
-
-function removeMarker(marker) {
-  marker.setMap(null);
-}
-
-function addStationMarker(map, data) {
-  return new StationMarker(map, { lat: data.latGraden, lng: data.lonGraden }, data);
-}
-
-function createAverageStation(baseStation, stations) {
-  const averageStation = stations.reduce((average, station) =>
-    Object.assign(average, {
-      temperatuurGC: average.temperatuurGC + station.temperatuurGC,
-      lat: average.lat + station.lat,
-      lng: average.lng + station.lng,
-      latGraden: average.latGraden + station.latGraden,
-      lngGraden: average.lngGraden + station.lngGraden
-    })
-  , baseStation);
-
-  const t = (stations.length + 1);
-  return Object.assign(averageStation, {
-    temperatuurGC: averageStation.temperatuurGC / t,
-    lat: averageStation.lat / t,
-    lng: averageStation.lng / t,
-    latGraden: averageStation.latGraden / t,
-    lngGraden: averageStation.lngGraden / t,
-  });
-}
+import { createAverageObject } from './utils';
 
 function isIntersectingStation(intersectLatLng, baseStation, compareStation) {
   const baseLatLng = getStationLatLng(baseStation);
@@ -40,6 +13,14 @@ function isIntersectingStation(intersectLatLng, baseStation, compareStation) {
     Math.abs(baseLatLng.lat - compareLatLng.lat) < intersectLatLng.lat &&
     Math.abs(baseLatLng.lng - compareLatLng.lng) < intersectLatLng.lng
   );
+}
+
+function removeMarker(marker) {
+  marker.setMap(null);
+}
+
+function addStationMarker(map, data) {
+  return new StationMarker(map, data);
 }
 
 export class StationMarkerCluster extends google.maps.OverlayView {
@@ -55,15 +36,18 @@ export class StationMarkerCluster extends google.maps.OverlayView {
   }
 
   getIntersectLatLng() {
-    // find out how what the distance between a the marker size is to find out intersections
-    const pixelA = new google.maps.Point(0, 0);
-    const pixelB = new google.maps.Point(MARKER_WIDTH, MARKER_HEIGHT);
-    const posA = this.getProjection().fromDivPixelToLatLng(pixelA);
-    const posB = this.getProjection().fromDivPixelToLatLng(pixelB);
+    const projection = this.getProjection();
+    const center = new google.maps.LatLng(MAP_CENTER.lat, MAP_CENTER.lng);
+    const centerPixel = projection.fromLatLngToContainerPixel(center);
+    const offsetPixel = new google.maps.Point(
+      centerPixel.x + (MARKER_WIDTH * 1.5),
+      centerPixel.y + (MARKER_HEIGHT * 1.5)
+    );
+    const offset = projection.fromContainerPixelToLatLng(offsetPixel);
 
     return {
-      lat: posB.lng() - posA.lng(),
-      lng: posB.lng() - posA.lng()
+      lat: center.lat() - offset.lat(),
+      lng: offset.lng() - center.lng()
     };
   }
 
@@ -87,7 +71,7 @@ export class StationMarkerCluster extends google.maps.OverlayView {
 
       drawStations.push(
         intersections.length ?
-          createAverageStation(curStation, intersections) :
+          createAverageObject([curStation, ...intersections]) :
           curStation
       );
     }

@@ -4,10 +4,10 @@ export const MARKER_WIDTH = 50;
 export const MARKER_HEIGHT = 50;
 
 export class StationMarker extends google.maps.OverlayView {
-  constructor(map, position, station) {
+  constructor(map, station) {
     super();
 
-    this.position = new google.maps.LatLng(position.lat, position.lng);
+    this.position = new google.maps.LatLng(station.latGraden, station.lonGraden);
     this.data = station;
 
     this.setMap(map);

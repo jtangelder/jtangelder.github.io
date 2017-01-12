@@ -1,6 +1,9 @@
 import { API_URL } from './constants';
-import { map } from './utils';
 import { parseXMLString, nodeToJSON } from './xmlUtils';
+
+function selectAll(xmlTree, selector) {
+  return Array.from(xmlTree.querySelectorAll(selector));
+}
 
 export function fetchWeatherData() {
   return window.fetch(API_URL)
@@ -9,7 +12,7 @@ export function fetchWeatherData() {
 }
 
 export function getStations(xmlTree) {
-  return map(nodeToJSON, xmlTree.querySelectorAll('actueel_weer > weerstations > weerstation'));
+  return selectAll(xmlTree, 'actueel_weer > weerstations > weerstation').map(nodeToJSON);
 }
 
 export function stationHasTemperature(station) {

@@ -71,68 +71,6 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ exports["c"] = reduce;
-/* harmony export (immutable) */ exports["b"] = map;
-/* harmony export (immutable) */ exports["a"] = round;
-function reduce(fn, initialValue, arrayLike) {
-  let value = initialValue;
-  for(let i = 0; i < arrayLike.length; i++) {
-    value = fn(value, arrayLike[i], i);
-  }
-  return value;
-}
-
-function map(fn, arrayLike) {
-  return reduce((acc, value, index) => {
-    acc.push(fn(value, index));
-    return acc;
-  }, [], arrayLike);
-}
-
-function round(nr, decimals) {
-  const m = Math.pow(10, decimals);
-  return Math.round(nr * m) / m;
-}
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__xmlUtils__ = __webpack_require__(5);
-/* harmony export (immutable) */ exports["a"] = fetchWeatherData;
-/* harmony export (immutable) */ exports["b"] = getStations;
-/* harmony export (immutable) */ exports["c"] = stationHasTemperature;
-/* harmony export (immutable) */ exports["d"] = getStationLatLng;
-
-
-
-
-function fetchWeatherData() {
-  return window.fetch(__WEBPACK_IMPORTED_MODULE_0__constants__["d" /* API_URL */])
-    .then(response => response.text())
-    .then(__WEBPACK_IMPORTED_MODULE_2__xmlUtils__["a" /* parseXMLString */])
-}
-
-function getStations(xmlTree) {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils__["b" /* map */])(__WEBPACK_IMPORTED_MODULE_2__xmlUtils__["b" /* nodeToJSON */], xmlTree.querySelectorAll('actueel_weer > weerstations > weerstation'));
-}
-
-function stationHasTemperature(station) {
-  return station.temperatuurGC !== '-';
-}
-
-function getStationLatLng(station) {
-  return { lat: station.latGraden, lng: station.lonGraden };
-}
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 const API_URL = 'http://xml.buienradar.nl/';
 /* harmony export (immutable) */ exports["d"] = API_URL;
 
@@ -155,47 +93,119 @@ const MAP_STYLES = [
 
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__xmlUtils__ = __webpack_require__(5);
+/* harmony export (immutable) */ exports["a"] = fetchWeatherData;
+/* harmony export (immutable) */ exports["b"] = getStations;
+/* harmony export (immutable) */ exports["c"] = stationHasTemperature;
+/* harmony export (immutable) */ exports["d"] = getStationLatLng;
+
+
+
+function selectAll(xmlTree, selector) {
+  return Array.from(xmlTree.querySelectorAll(selector));
+}
+
+function fetchWeatherData() {
+  return window.fetch(__WEBPACK_IMPORTED_MODULE_0__constants__["d" /* API_URL */])
+    .then(response => response.text())
+    .then(__WEBPACK_IMPORTED_MODULE_1__xmlUtils__["a" /* parseXMLString */])
+}
+
+function getStations(xmlTree) {
+  return selectAll(xmlTree, 'actueel_weer > weerstations > weerstation').map(__WEBPACK_IMPORTED_MODULE_1__xmlUtils__["b" /* nodeToJSON */]);
+}
+
+function stationHasTemperature(station) {
+  return station.temperatuurGC !== '-';
+}
+
+function getStationLatLng(station) {
+  return { lat: station.latGraden, lng: station.lonGraden };
+}
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ exports["b"] = round;
+/* unused harmony export average */
+/* unused harmony export mode */
+/* unused harmony export getValues */
+/* unused harmony export getAverageValue */
+/* harmony export (immutable) */ exports["a"] = createAverageObject;
+function round(nr, decimals) {
+  const m = Math.pow(10, decimals);
+  return Math.round(nr * m) / m;
+}
+
+function average(values) {
+  return values.reduce((a, b) => a + b) / values.length;
+}
+
+function mode(values) {
+  return values.reduce((acc, value) => {
+    acc.map[value] = acc.map[value] || 0;
+    acc.map[value] += 1;
+
+    if (acc.map[value] > acc.modeCount) {
+      acc.modeCount = acc.map[value];
+      acc.modeValue = value;
+    }
+    return acc;
+  }, {
+    map: {},
+    modeCount: 0,
+    modeValue: null
+  }).modeValue;
+}
+
+function getValues(array, keys) {
+  return array.reduce((results, item) => {
+    keys.forEach(key => {
+      results[key] = results[key] || [];
+      results[key].push(item[key]);
+    });
+    return results;
+  }, {});
+}
+
+function getAverageValue(values) {
+  return (typeof values[0] === 'number') ? average(values) : mode(values)
+}
+
+function createAverageObject(objects) {
+  if (!objects.length) {
+    return {};
+  }
+  const values = getValues(objects, Object.keys(objects[0]));
+  return Object.keys(values).reduce((result, key) =>
+    Object.assign(result, { [key]: getAverageValue(values[key]) })
+  );
+}
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__StationMarker__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__StationMarker__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils__ = __webpack_require__(2);
 
 
 
-function removeMarker(marker) {
-  marker.setMap(null);
-}
 
-function addStationMarker(map, data) {
-  return new __WEBPACK_IMPORTED_MODULE_0__StationMarker__["a" /* StationMarker */](map, { lat: data.latGraden, lng: data.lonGraden }, data);
-}
-
-function createAverageStation(baseStation, stations) {
-  const averageStation = stations.reduce((average, station) =>
-    Object.assign(average, {
-      temperatuurGC: average.temperatuurGC + station.temperatuurGC,
-      lat: average.lat + station.lat,
-      lng: average.lng + station.lng,
-      latGraden: average.latGraden + station.latGraden,
-      lngGraden: average.lngGraden + station.lngGraden
-    })
-  , baseStation);
-
-  const t = (stations.length + 1);
-  return Object.assign(averageStation, {
-    temperatuurGC: averageStation.temperatuurGC / t,
-    lat: averageStation.lat / t,
-    lng: averageStation.lng / t,
-    latGraden: averageStation.latGraden / t,
-    lngGraden: averageStation.lngGraden / t,
-  });
-}
 
 function isIntersectingStation(intersectLatLng, baseStation, compareStation) {
-  const baseLatLng = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api__["d" /* getStationLatLng */])(baseStation);
-  const compareLatLng = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api__["d" /* getStationLatLng */])(compareStation);
+  const baseLatLng = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["d" /* getStationLatLng */])(baseStation);
+  const compareLatLng = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["d" /* getStationLatLng */])(compareStation);
   if (baseStation === compareStation) {
     return false;
   }
@@ -203,6 +213,14 @@ function isIntersectingStation(intersectLatLng, baseStation, compareStation) {
     Math.abs(baseLatLng.lat - compareLatLng.lat) < intersectLatLng.lat &&
     Math.abs(baseLatLng.lng - compareLatLng.lng) < intersectLatLng.lng
   );
+}
+
+function removeMarker(marker) {
+  marker.setMap(null);
+}
+
+function addStationMarker(map, data) {
+  return new __WEBPACK_IMPORTED_MODULE_1__StationMarker__["a" /* StationMarker */](map, data);
 }
 
 class StationMarkerCluster extends google.maps.OverlayView {
@@ -218,15 +236,18 @@ class StationMarkerCluster extends google.maps.OverlayView {
   }
 
   getIntersectLatLng() {
-    // find out how what the distance between a the marker size is to find out intersections
-    const pixelA = new google.maps.Point(0, 0);
-    const pixelB = new google.maps.Point(__WEBPACK_IMPORTED_MODULE_0__StationMarker__["b" /* MARKER_WIDTH */], __WEBPACK_IMPORTED_MODULE_0__StationMarker__["c" /* MARKER_HEIGHT */]);
-    const posA = this.getProjection().fromDivPixelToLatLng(pixelA);
-    const posB = this.getProjection().fromDivPixelToLatLng(pixelB);
+    const projection = this.getProjection();
+    const center = new google.maps.LatLng(__WEBPACK_IMPORTED_MODULE_0__constants__["a" /* MAP_CENTER */].lat, __WEBPACK_IMPORTED_MODULE_0__constants__["a" /* MAP_CENTER */].lng);
+    const centerPixel = projection.fromLatLngToContainerPixel(center);
+    const offsetPixel = new google.maps.Point(
+      centerPixel.x + (__WEBPACK_IMPORTED_MODULE_1__StationMarker__["b" /* MARKER_WIDTH */] * 1.5),
+      centerPixel.y + (__WEBPACK_IMPORTED_MODULE_1__StationMarker__["c" /* MARKER_HEIGHT */] * 1.5)
+    );
+    const offset = projection.fromContainerPixelToLatLng(offsetPixel);
 
     return {
-      lat: posB.lng() - posA.lng(),
-      lng: posB.lng() - posA.lng()
+      lat: center.lat() - offset.lat(),
+      lng: offset.lng() - center.lng()
     };
   }
 
@@ -250,7 +271,7 @@ class StationMarkerCluster extends google.maps.OverlayView {
 
       drawStations.push(
         intersections.length ?
-          createAverageStation(curStation, intersections) :
+          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__utils__["a" /* createAverageObject */])([curStation, ...intersections]) :
           curStation
       );
     }
@@ -269,7 +290,7 @@ class StationMarkerCluster extends google.maps.OverlayView {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(2);
 
 
 const MARKER_WIDTH = 50;
@@ -280,10 +301,10 @@ const MARKER_HEIGHT = 50;
 
 
 class StationMarker extends google.maps.OverlayView {
-  constructor(map, position, station) {
+  constructor(map, station) {
     super();
 
-    this.position = new google.maps.LatLng(position.lat, position.lng);
+    this.position = new google.maps.LatLng(station.latGraden, station.lonGraden);
     this.data = station;
 
     this.setMap(map);
@@ -301,7 +322,7 @@ class StationMarker extends google.maps.OverlayView {
     });
 
     element.className = 'stationMarker';
-    element.textContent = `${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* round */])(data.temperatuurGC, 1)}`;
+    element.textContent = `${__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["b" /* round */])(data.temperatuurGC, 1)}`;
     element.title = `${data.stationnaam.regio} - ${data.stationnaam.value}`;
 
     this.getPanes().overlayLayer.appendChild(element);
@@ -330,11 +351,8 @@ class StationMarker extends google.maps.OverlayView {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
 /* harmony export (immutable) */ exports["a"] = parseXMLString;
 /* harmony export (immutable) */ exports["b"] = nodeToJSON;
-
-
 function parseValue(value) {
   try {
     return JSON.parse(value);
@@ -349,15 +367,15 @@ function parseXMLString(xmlString) {
 }
 
 function nodeChildrenToJSON(node) {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* reduce */])((acc, childNode) =>
+  return Array.from(node.children).reduce((acc, childNode) =>
     Object.assign(acc, { [childNode.nodeName]: nodeToJSON(childNode) })
-  , {}, node.children);
+  , {});
 }
 
 function nodeAttributesToJSON(node) {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* reduce */])((acc, attribute) =>
+  return Array.from(node.attributes).reduce((acc, attribute) =>
     Object.assign(acc, { [attribute.name]: parseValue(attribute.value) })
-  , {}, node.attributes)
+  , {});
 }
 
 function nodeToJSON(node) {
@@ -379,7 +397,7 @@ function nodeToJSON(node) {
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__StationMarkerCluster__ = __webpack_require__(3);
 /* harmony export (immutable) */ exports["initMap"] = initMap;

@@ -1,5 +1,3 @@
-import { reduce } from './utils';
-
 function parseValue(value) {
   try {
     return JSON.parse(value);
@@ -14,15 +12,15 @@ export function parseXMLString(xmlString) {
 }
 
 function nodeChildrenToJSON(node) {
-  return reduce((acc, childNode) =>
+  return Array.from(node.children).reduce((acc, childNode) =>
     Object.assign(acc, { [childNode.nodeName]: nodeToJSON(childNode) })
-  , {}, node.children);
+  , {});
 }
 
 function nodeAttributesToJSON(node) {
-  return reduce((acc, attribute) =>
+  return Array.from(node.attributes).reduce((acc, attribute) =>
     Object.assign(acc, { [attribute.name]: parseValue(attribute.value) })
-  , {}, node.attributes)
+  , {});
 }
 
 export function nodeToJSON(node) {
