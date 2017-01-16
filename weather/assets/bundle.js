@@ -235,13 +235,14 @@ class StationMarkerCluster extends google.maps.OverlayView {
     this.markers.forEach(removeMarker);
   }
 
-  getIntersectLatLng() {
+  getIntersectLatLng(latlng) {
     const projection = this.getProjection();
-    const center = new google.maps.LatLng(__WEBPACK_IMPORTED_MODULE_0__constants__["a" /* MAP_CENTER */].lat, __WEBPACK_IMPORTED_MODULE_0__constants__["a" /* MAP_CENTER */].lng);
+    const center = new google.maps.LatLng(latlng.lat, latlng.lng);
     const centerPixel = projection.fromLatLngToContainerPixel(center);
+
     const offsetPixel = new google.maps.Point(
-      centerPixel.x + (__WEBPACK_IMPORTED_MODULE_1__StationMarker__["b" /* MARKER_WIDTH */] * 1.5),
-      centerPixel.y + (__WEBPACK_IMPORTED_MODULE_1__StationMarker__["c" /* MARKER_HEIGHT */] * 1.5)
+      centerPixel.x + (__WEBPACK_IMPORTED_MODULE_1__StationMarker__["b" /* MARKER_WIDTH */] * 2),
+      centerPixel.y + (__WEBPACK_IMPORTED_MODULE_1__StationMarker__["c" /* MARKER_HEIGHT */] * 2)
     );
     const offset = projection.fromContainerPixelToLatLng(offsetPixel);
 
@@ -252,12 +253,12 @@ class StationMarkerCluster extends google.maps.OverlayView {
   }
 
   draw() {
-    const intersectLatLng = this.getIntersectLatLng();
     const drawStations = [];
     let stationsStack = [...this.stations];
     let curStation;
 
     while(curStation = stationsStack.shift()) {
+      const intersectLatLng = this.getIntersectLatLng(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["d" /* getStationLatLng */])(curStation));
       const intersections = stationsStack.filter(compareStation =>
         isIntersectingStation(intersectLatLng, curStation, compareStation)
       );

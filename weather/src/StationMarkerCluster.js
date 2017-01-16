@@ -35,13 +35,14 @@ export class StationMarkerCluster extends google.maps.OverlayView {
     this.markers.forEach(removeMarker);
   }
 
-  getIntersectLatLng() {
+  getIntersectLatLng(latlng) {
     const projection = this.getProjection();
-    const center = new google.maps.LatLng(MAP_CENTER.lat, MAP_CENTER.lng);
+    const center = new google.maps.LatLng(latlng.lat, latlng.lng);
     const centerPixel = projection.fromLatLngToContainerPixel(center);
+
     const offsetPixel = new google.maps.Point(
-      centerPixel.x + (MARKER_WIDTH * 1.5),
-      centerPixel.y + (MARKER_HEIGHT * 1.5)
+      centerPixel.x + (MARKER_WIDTH * 2),
+      centerPixel.y + (MARKER_HEIGHT * 2)
     );
     const offset = projection.fromContainerPixelToLatLng(offsetPixel);
 
@@ -52,12 +53,12 @@ export class StationMarkerCluster extends google.maps.OverlayView {
   }
 
   draw() {
-    const intersectLatLng = this.getIntersectLatLng();
     const drawStations = [];
     let stationsStack = [...this.stations];
     let curStation;
 
     while(curStation = stationsStack.shift()) {
+      const intersectLatLng = this.getIntersectLatLng(getStationLatLng(curStation));
       const intersections = stationsStack.filter(compareStation =>
         isIntersectingStation(intersectLatLng, curStation, compareStation)
       );
