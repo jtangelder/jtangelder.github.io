@@ -1,8 +1,8 @@
 <html><body>
   <a href="/?page=2">Continue</a>
   <script>
-    const a = document.querySelector('a');
-    const parsedUrl = new URL(window.location.href);
-    const page = parsedUrl.searchParams.get('page');
-    a.href = '/?page=' + (page ? page + 1 : 2);
+    var a = document.querySelector('a');
+    var parsedUrl = new URL(window.location.href);
+    var page = parsedUrl.searchParams.get('page');
+    a.href = '/?page=' + (page ? ++page : 2);
   </body></html>
