@@ -2,6 +2,16 @@
 <head>
   <title>💩</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon">
+  <script>
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    ctx.textBaseline = 'top'; 
+    ctx.font = '32px serif';
+    ctx.fillText(document.title, 0, 0);
+    document.querySelector('link[rel=icon]').href = canvas.toDataURL();
+  </script>
 </head>
 <body style="font-size:100px">💩</body>
 </html>
