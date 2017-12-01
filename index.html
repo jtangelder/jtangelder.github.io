@@ -1,13 +1,21 @@
 <html>
 <head>
   <title>Me</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon">
+  <style>
+    body { 
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @keyframes hueee {
+      from { -webkit-filter: hue-rotate(0deg); }
+      to { -webkit-filter: hue-rotate(360deg); }
+    }
+    img { animation: hueee 5s linear infinite; }
+  </style>
 </head>
-<body style="background: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;">  
+<body>  
   <img src="https://lh3.googleusercontent.com/-xUSExUfZog0/AAAAAAAAAAI/AAAAAAAAEGM/jZZ8Mb-TcLc/photo.jpg">
 </body>
 </html>
