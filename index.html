@@ -1,1 +1,14 @@
-<a href="https://www.google.com/search?q=%22Jorik+Tangelder%22">More about me</a>
+<a href="https://www.google.com/search?q=%22Jorik+Tangelder%22">More about me in <strong>X</strong></a>
+<script>
+  let count = 5;
+  function countdown() {
+    count -= 1;
+    if (count === 0) {
+      window.location = document.querySelector('a').href;
+      return;
+    }
+    document.querySelector('strong').innerText = count;
+    setTimeout(countdown, 1000);
+  }
+  countdown();
+</script>
