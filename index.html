@@ -30,7 +30,11 @@
       fetch("https://api.github.com/repos/jtangelder/jtangelder.github.io/issues")
         .then(res => res.json())
         .then(issues => {
-          const message = issues.find(issue => issue.title.startsWith('#blog '));
+          const message = issues.find(issue => {
+            return issue.author_association === 'OWNER' && 
+              issue.state === 'open' &&
+              issue.title.startsWith('#blog');
+          });
           if (message && message.body) {
             const p = document.createElement('p');
             p.textContent = message.body;
