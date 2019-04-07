@@ -12,21 +12,29 @@
       }
       
       p {
+        animation: appear 1s forwards;
         color: rgba(0, 0, 0, .75);
         font: 40px/1.4 'Comfortaa', cursive;
         margin: 10vw;
         text-align: center;
       }
+      
+      @keyframes appear {
+        from { transform: translateY(-10px); opacity: 0; }
+        to { transform: translateY(0px); opacity: 1; }
+      }
     </style>
   </head>
   <body>
-    <p>🕶</p>
     <script>
       fetch("https://api.github.com/repos/jtangelder/jtangelder.github.io/issues")
         .then(res => res.json())
         .then(issues => {
           const message = issues.find(issue => issue.title.startsWith('#blog '));
-          document.querySelector('p').innerText = message ? message.body : '🕶';
+          if (message && message.body) {
+            const p = document.createElement('p');
+            p.textContent = message.body;
+            document.body.appendChild(p);
         });
     </script>
   </body>
