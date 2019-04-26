@@ -28,7 +28,9 @@
   </head>
   <body>
     <script>
-      fetch("https://api.github.com/repos/jtangelder/jtangelder.github.io/issues")
+      fetch("https://api.github.com/repos/jtangelder/jtangelder.github.io/issues", {
+        cache: "no-cache"
+      })
         .then(res => res.json())
         .then(issues => {
           const message = issues.find(issue => {
