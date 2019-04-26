@@ -29,13 +29,16 @@
   <body>
     <p></p>
     <script>
-      const colors = ['#d11141', '#00b159', '#00aedb', '#f37735', '#ffc425'];
-      document.body.style.background = colors[Math.floor(colors.length * Math.random())];
+      const REFRESH_INTERVAL_MS = 5 * 1000;
+      const ISSUES_API = 'https://api.github.com/repos/jtangelder/jtangelder.github.io/issues';
+      const COLORS = ['#d11141', '#00b159', '#00aedb', '#f37735', '#ffc425'];
       
-      function fetchMessage() {
-        fetch("https://api.github.com/repos/jtangelder/jtangelder.github.io/issues", {
-          cache: "no-cache"
-        })
+      function setRandomBackground() {
+        document.body.style.background = COLORS[Math.floor(COLORS.length * Math.random())]; 
+      }
+      
+      function getRecentMessage() {
+        return fetch(ISSUES_API, {cache: 'no-cache'})
           .then(response => response.json())
           .then(issues => {
             return issues.find(issue => {
@@ -43,15 +46,28 @@
                 issue.state === 'open' &&
                 issue.title.startsWith('#blog');
             })
-          })
-          .then(message => {
-            if (message && message.body) {
-              document.querySelector('p').textContent = message.body;
-            }
-          })
-          .then(() => setTimeout(fetchMessage, 5 * 1000));
+          });
       }
-      fetchMessage();
+      
+      function showMessage(message) {
+        const element = document.querySelector('p');
+        if (message && message.body) {
+          const content = message.body;
+          if (element.textContent !== '' && element.textContent !== content) {
+            setRandomBackground();
+          }
+          element.textContent = content;
+        }
+      }
+      
+      function showRecentMessage() {
+        getRecentMessage()
+          .then(showMessage)
+          .then(() => setTimeout(showRecentMessage, REFRESH_INTERVAL_MS));
+      }
+      
+      setRandomBackground();
+      showRecentMessage();
     </script>
   </body>
 </html>
