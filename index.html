@@ -27,26 +27,31 @@
     </style>
   </head>
   <body>
+    <p></p>
     <script>
       const colors = ['#d11141', '#00b159', '#00aedb', '#f37735', '#ffc425'];
       document.body.style.background = colors[Math.floor(colors.length * Math.random())];
       
-      fetch("https://api.github.com/repos/jtangelder/jtangelder.github.io/issues", {
-        cache: "no-cache"
-      })
-        .then(res => res.json())
-        .then(issues => {
-          const message = issues.find(issue => {
-            return issue.author_association === 'OWNER' && 
-              issue.state === 'open' &&
-              issue.title.startsWith('#blog');
-          });
-          if (message && message.body) {
-            const p = document.createElement('p');
-            p.textContent = message.body;
-            document.body.appendChild(p);
-          }
-        });
+      function fetchMessage() {
+        fetch("https://api.github.com/repos/jtangelder/jtangelder.github.io/issues", {
+          cache: "no-cache"
+        })
+          .then(response => response.json())
+          .then(issues => {
+            return issues.find(issue => {
+              return issue.author_association === 'OWNER' && 
+                issue.state === 'open' &&
+                issue.title.startsWith('#blog');
+            })
+          })
+          .then(message => {
+            if (message && message.body) {
+              document.querySelector('p').textContent = message.body;
+            }
+          })
+          .then(() => setTimeout(fetchMessage, 5 * 1000));
+      }
+      fetchMessage();
     </script>
   </body>
 </html>
