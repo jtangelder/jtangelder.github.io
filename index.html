@@ -11,7 +11,7 @@
         margin: 0;
       }
       
-      p {
+      p.show {
         animation: appear 1s forwards;
         color: rgba(0, 0, 0, .75);
         font: 10vw/.95 'Passion One', cursive;
@@ -54,9 +54,12 @@
         if (message && message.body) {
           const content = message.body;
           if (element.textContent !== '' && element.textContent !== content) {
+            element.classList.remove('show');
             setRandomBackground();
           }
+          
           element.textContent = content;
+          element.classList.add('show');
         }
       }
       
