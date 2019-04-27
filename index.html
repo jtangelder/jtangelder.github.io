@@ -49,7 +49,12 @@
                 issue.title.startsWith('#blog')
             );
           })
-          .then(issue => !issue ? throw new Error('No message found.') : issue.body);
+          .then(issue => { 
+            if(!issue) { 
+              throw new Error('No message found.');
+            }
+            return issue.body;
+          });
       }
       
       function showMessage(message) {
@@ -73,7 +78,7 @@
         })
           .then(getRecentMessage)
           .then(showMessage)
-          .catch(console.error)
+          .catch(err => console.log(err.message))
           .finally(() => setTimeout(showRecentMessage, REFRESH_INTERVAL_MS));
       }
       
