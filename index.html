@@ -35,25 +35,21 @@
       const COLORS = ['#d11141', '#00b159', '#00aedb', '#f37735', '#ffc425'];
       
       function setRandomBackground() {
-        document.body.style.background = COLORS[Math.floor(COLORS.length * Math.random())]; 
+        const color = COLORS[Math.floor(COLORS.length * Math.random())];
+        document.body.style.background = color;
       }
       
       function getRecentMessage() {
         return fetch(ISSUES_API, {cache: 'no-cache'})
           .then(response => response.json())
           .then(issues => {
-            return issues.find(issue => {
-              return issue.author_association === 'OWNER' && 
+            return issues.find(issue =>
+                issue.author_association === 'OWNER' && 
                 issue.state === 'open' &&
-                issue.title.startsWith('#blog');
-            })
+                issue.title.startsWith('#blog')
+            );
           })
-          .then(issue => {
-            if (!issue) {
-              throw new Error('No message.');
-            }
-            return issue.body;
-          });
+          .then(issue => !issue ? throw new Error('No message found.') : issue.body);
       }
       
       function showMessage(message) {
@@ -71,10 +67,13 @@
       
       function showRecentMessage() {
         return new Promise((resolve, reject) => {
-          document.visibilityState === 'visible' ? resolve() : reject(new Error('Page is hidden.'));
+          document.visibilityState === 'visible' ? 
+              resolve() : 
+              reject(new Error('Page is hidden.'));
         })
           .then(getRecentMessage)
           .then(showMessage)
+          .catch(console.error)
           .finally(() => setTimeout(showRecentMessage, REFRESH_INTERVAL_MS));
       }
       
