@@ -71,19 +71,22 @@
         }
       }
       
-      function showRecentMessage() {
-        return new Promise((resolve, reject) => {
-          document.visibilityState === 'visible' ? 
-              resolve() : 
-              reject(new Error('Page is hidden.'));
-        })
+      function updateMessage() {        
+        return promiseFromBoolean(isPageVisible())
           .then(getRecentMessage)
           .then(showMessage)
-          .catch(err => console.log(err.message))
-          .finally(() => setTimeout(showRecentMessage, REFRESH_INTERVAL_MS));
+          .finally(() => setTimeout(updateMessage, REFRESH_INTERVAL_MS));
       }
       
-      showRecentMessage();
+      function isPageVisible() {
+        return document.visibilityState === 'visible';
+      }
+      
+      function promiseFromBoolean(condition) {
+        return condition() ? Promise.resolve() : Promise.reject();
+      }
+      
+      updateMessage();
     </script>
   </body>
 </html>
