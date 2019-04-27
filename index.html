@@ -53,8 +53,9 @@
         const element = document.querySelector('p');
         if (message && message.body) {
           const content = message.body;
-          if (element.textContent !== '' && element.textContent !== content) {
+          if (element.textContent && element.textContent !== content) {
             element.classList.remove('show');
+            element.getBoundingClientRect(); // Repaint.
             setRandomBackground();
           }
           
