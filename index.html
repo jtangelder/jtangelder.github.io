@@ -64,9 +64,12 @@
       }
       
       function showRecentMessage() {
-        getRecentMessage()
+        return new Promise((resolve, reject) => {
+          document.visibilityState === 'visible' ? resolve() : reject();
+        })
+          .then(getRecentMessage)
           .then(showMessage)
-          .then(() => setTimeout(showRecentMessage, REFRESH_INTERVAL_MS));
+          .finally(() => setTimeout(showRecentMessage, REFRESH_INTERVAL_MS));
       }
       
       setRandomBackground();
