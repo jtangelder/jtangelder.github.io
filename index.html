@@ -82,8 +82,8 @@
         return document.visibilityState === 'visible';
       }
       
-      function promiseFromBoolean(condition) {
-        return condition() ? Promise.resolve() : Promise.reject();
+      function promiseFromBoolean(bool) {
+        return bool ? Promise.resolve() : Promise.reject();
       }
       
       updateMessage();
