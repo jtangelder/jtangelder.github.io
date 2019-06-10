@@ -6,16 +6,17 @@
       body {
         align-items: center;
         background: #222;
+        color: #222;
         display: flex;
         height: 100vh;
         justify-content: center;
         margin: 0;
-        transition: background .2s;
+        transition: background .2s, color .2s;
       }
       
       p.show {
         animation: appear 1s forwards;
-        color: rgba(0, 0, 0, .75);
+        filter: invert(1);
         font: 10vw/.95 'Passion One', cursive;
         margin: 5vh 5vw;
         text-align: center;
@@ -38,6 +39,7 @@
       function setRandomBackground() {
         const color = COLORS[Math.floor(COLORS.length * Math.random())];
         document.body.style.background = color;
+        document.body.style.color = color;
       }
       
       function getRecentMessage() {
