@@ -30,65 +30,6 @@
     </style>
   </head>
   <body>
-    <p></p>
-    <script>
-      const REFRESH_INTERVAL_MS = 5 * 1000;
-      const ISSUES_API = 'https://api.github.com/repos/jtangelder/jtangelder.github.io/issues';
-      const COLORS = ['#d11141', '#00b159', '#00aedb', '#f37735', '#ffc425'];
-      
-      function setRandomBackground() {
-        const color = COLORS[Math.floor(COLORS.length * Math.random())];
-        document.body.style.background = color;
-        document.body.style.color = color;
-      }
-      
-      function getRecentMessage() {
-        return fetch(ISSUES_API, {cache: 'no-cache'})
-          .then(response => response.json())
-          .then(issues => {
-            return issues.find(issue =>
-                issue.author_association === 'OWNER' && 
-                issue.state === 'open' &&
-                issue.title.startsWith('#blog')
-            );
-          })
-          .then(issue => { 
-            if(!issue) { 
-              throw new Error('No message found.');
-            }
-            return issue.body;
-          });
-      }
-      
-      function showMessage(message) {
-        const element = document.querySelector('p');
-        if (element.textContent !== message) {
-          element.textContent = message;
-
-          element.classList.remove('show');
-          element.getBoundingClientRect(); // Repaint to retrigger the CSS animation.
-          element.classList.add('show');
-
-          setRandomBackground();
-        }
-      }
-      
-      function updateMessage() {        
-        return promiseFromBoolean(isPageVisible())
-          .then(getRecentMessage)
-          .then(showMessage)
-          .finally(() => setTimeout(updateMessage, REFRESH_INTERVAL_MS));
-      }
-      
-      function isPageVisible() {
-        return document.visibilityState === 'visible';
-      }
-      
-      function promiseFromBoolean(bool) {
-        return bool ? Promise.resolve() : Promise.reject();
-      }
-      
-      updateMessage();
-    </script>
+    <p><img src=me.png></p>
   </body>
 </html>
