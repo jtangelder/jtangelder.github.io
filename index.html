@@ -1,35 +1,30 @@
 <html>
   <head>
     <title>🕶</title>
-    <link href="https://fonts.googleapis.com/css?family=Passion+One" rel="stylesheet">
     <style> 
       body {
         align-items: center;
         background: #222;
         color: #222;
         display: flex;
-        height: 100vh;
+        height: 80vh;
         justify-content: center;
         margin: 0;
-        transition: background .2s, color .2s;
       }
       
-      p.show {
-        animation: appear 1s forwards;
-        filter: invert(1);
-        font: 10vw/.95 'Passion One', cursive;
+      p {
+        animation: img 5s infinite;
         margin: 5vh 5vw;
         text-align: center;
-        text-transform: uppercase;
       }
       
-      @keyframes appear {
-        from { transform: translateY(-10px); opacity: 0; }
-        to { transform: translateY(0px); opacity: 1; }
+      @keyframes img {
+        from { filter: hue-rotate(0deg); }
+        to { filter: hue-rotate (359deg); }
       }
     </style>
   </head>
   <body>
-    <p><img src=me.png></p>
+    <p><img src=me.png alt=me</p>
   </body>
 </html>
