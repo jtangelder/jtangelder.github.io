@@ -11,12 +11,31 @@
         height: 80vh;
         justify-content: center;
         margin: 0;
+        font: 1em Helvetica, Arial, sans-serif;
       }
       
-      p {
-        animation: img 5s infinite;
+      section {
         margin: 5vh 5vw;
         text-align: center;
+      }
+      
+      img {
+        animation: img 5s infinite;
+      }
+      
+      p, ul {
+        margin: 1em 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+      }
+      
+      li {
+        flex: 1;
+      }
+      
+      a {
+        color: #fff;
       }
       
       @keyframes img {
@@ -26,6 +45,13 @@
     </style>
   </head>
   <body>
-    <p><img src=me.png alt=me</p>
+    <section>
+      <p><img src="me.png" alt="me"></p>
+      <ul>
+        <li><a href="https://www.linkedin.com/in/joriktangelder/">LinkedIn</a></li>
+        <li><a href="https://github.com/jtangelder">Github</a></li>
+        <li><a href="https://twitter.com/jorikdelaporik">Twitter</a></li>
+      </ul>
+    </section>
   </body>
 </html>
