@@ -53,6 +53,17 @@
 </script>
   </head>
   <body>
+    <script>
+      
+      function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+      }
+      const values = [];
+      for (let i=0; i<3; i++) {
+        values.push(getRandomInt(3) + 1);
+      }
+      document.body.style.background = '#' + values.map(v => v * 3).join('');
+    </script>
     <section>
       <h1>Jorik Tangelder</h1>
       <ul>
