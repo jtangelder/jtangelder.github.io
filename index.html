@@ -57,11 +57,16 @@
       function getRandomInt(max) {
         return Math.floor(Math.random() * max);
       }
-      const values = [];
-      for (let i=0; i<3; i++) {
-        values.push(getRandomInt(3) + 1);
+
+      function setRandomBackgroundColor() {
+        const values = [];
+        for (let i=0; i<3; i++) {
+          values.push(getRandomInt(3) + 1);
+        }
+        document.body.style.background = '#' + values.map(v => v * 3).join('');
       }
-      document.body.style.background = '#' + values.map(v => v * 3).join('');
+      setRandomBackgroundColor();
+      setInterval(setRandomBackgroundColor, 2000);
     </script>
     <section>
       <h1>Jorik Tangelder</h1>
