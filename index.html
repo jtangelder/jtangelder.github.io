@@ -11,6 +11,7 @@
         font: 1.3em/1.6 'Quicksand', sans-serif;
         justify-content: center;
         margin: 0;
+        transition: background 250ms infinite;
       }
       
       a {
@@ -66,7 +67,7 @@
         document.body.style.background = '#' + values.map(v => v * 3).join('');
       }
       setRandomBackgroundColor();
-      setInterval(setRandomBackgroundColor, 2000);
+      setInterval(setRandomBackgroundColor, 1500);
     </script>
     <section>
       <h1>Jorik Tangelder</h1>
