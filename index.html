@@ -4,16 +4,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand&amp;display=swap" rel="stylesheet">    
     <style> 
+
+      @property --bg-start {
+        syntax: "<color>";
+        inherits: false;
+        initial-value: #000;
+      }  
+
+      @property --bg-end {
+        syntax: "<color>";
+        inherits: false;
+        initial-value: #000;
+      }  
+
       body {
-        --bg-start: #000;
-        --bg-end: #000;
         align-items: center;
         color: white;
         display: flex;
         font: 1.5em/1.6 'Quicksand', sans-serif;
         justify-content: center;
         margin: 0;
-        background: linear-gradient(147deg, var(--bg-start) 0%, var(--bg-end) 100%);
+        background: linear-gradient(147deg, var(--bg-start), var(--bg-end));
+        transition: --bg-start 2s linear,  --bg-end 2s linear;
       }
       
       a {
@@ -26,54 +38,50 @@
         text-align: center;
       }
       
-      img {
-        animation: img 5s infinite;
-        max-width: 100%;
-        width: auto;
-      }
-      
       h1, ul {
         display: flex;
         list-style: none;
         margin: 1em 0;
         padding: 0;
-      }
-      
-      li { 
-        margin-right: 1em;  
+        gap: 1em;
       }
       
     </style>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TM36YMESX3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TM36YMESX3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-TM36YMESX3');
-</script>
+      gtag('config', 'G-TM36YMESX3');
+    </script>
   </head>
   <body>
     <script>
       
-      function getRandomInt(max) {
+      function randomInt(max) {
         return Math.floor(Math.random() * max);
       }
 
-      function setRandomBackgroundColor() {
+      function randomColor() {
         const values = [];
         for (let i=0; i<3; i++) {
-          values.push(getRandomInt(3) + 1);
+          values.push(randomInt(3) + 1);
         }
-        const next = '#' + values.map(v => v * 3).join('');
-        const current = rs = getComputedStyle(document.body).getPropertyValue('--bg-start');
-        
-        document.body.style.setProperty('--bg-end', current);
-        document.body.style.setProperty('--bg-start', next);
+        return '#' + values.map(v => v * 3).join('');
       }
-      setRandomBackgroundColor();
-      setInterval(setRandomBackgroundColor, 3000);
+      
+      function updateColors() {
+        const currentStyles = getComputedStyle(document.body);
+        const currentColor = rs = currentStyles.getPropertyValue('--bg-start');
+
+        document.body.style.setProperty('--bg-end', currentColor);
+        document.body.style.setProperty('--bg-start', randomColor());
+      }
+
+      updateColors();
+      setInterval(updateColors, 2000);
+
     </script>
     <section>
       <h1>Jorik Tangelder</h1>
