@@ -69,7 +69,8 @@
           values.push(getRandomInt(3) + 1);
         }
         const color = '#' + values.map(v => v * 3).join('');
-        document.body.style.setProperty('--bg-to', document.body.style.getProperty('--bg-start'));
+        const current = rs = getComputedStyle(document.body);
+        document.body.style.setProperty('--bg-end', current.getProperty('--bg-start'));
         document.body.style.setProperty('--bg-start', color);
       }
       setRandomBackgroundColor();
