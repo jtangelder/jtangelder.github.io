@@ -13,9 +13,7 @@
         font: 1.5em/1.6 'Quicksand', sans-serif;
         justify-content: center;
         margin: 0;
-        transition: background 1500ms linear;
         background: linear-gradient(147deg, var(--bg-start) 0%, var(--bg-end) 100%);
-
       }
       
       a {
@@ -68,13 +66,14 @@
         for (let i=0; i<3; i++) {
           values.push(getRandomInt(3) + 1);
         }
-        const color = '#' + values.map(v => v * 3).join('');
-        const current = rs = getComputedStyle(document.body);
-        document.body.style.setProperty('--bg-end', current.getPropertyValue('--bg-start'));
-        document.body.style.setProperty('--bg-start', color);
+        const next = '#' + values.map(v => v * 3).join('');
+        const current = rs = getComputedStyle(document.body).getPropertyValue('--bg-start');
+        
+        document.body.style.setProperty('--bg-end', current);
+        document.body.style.setProperty('--bg-start', next);
       }
       setRandomBackgroundColor();
-      setInterval(setRandomBackgroundColor, 1500);
+      setInterval(setRandomBackgroundColor, 3000);
     </script>
     <section>
       <h1>Jorik Tangelder</h1>
