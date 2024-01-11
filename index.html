@@ -70,7 +70,7 @@
         }
         const color = '#' + values.map(v => v * 3).join('');
         const current = rs = getComputedStyle(document.body);
-        document.body.style.setProperty('--bg-end', current.getProperty('--bg-start'));
+        document.body.style.setProperty('--bg-end', current.getPropertyValue('--bg-start'));
         document.body.style.setProperty('--bg-start', color);
       }
       setRandomBackgroundColor();
