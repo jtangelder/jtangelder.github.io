@@ -5,6 +5,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand&amp;display=swap" rel="stylesheet">    
     <style> 
 
+      @property --bg-angle {
+        syntax: "<angle>";
+        inherits: false;
+        initial-value: 147deg;
+      }  
+
       @property --bg-start {
         syntax: "<color>";
         inherits: false;
@@ -24,8 +30,8 @@
         font: 1.5em/1.6 'Quicksand', sans-serif;
         justify-content: center;
         margin: 0;
-        background: linear-gradient(147deg, var(--bg-start), var(--bg-end));
-        transition: --bg-start 2s linear,  --bg-end 2s linear;
+        background: linear-gradient(var(--bg-angle), var(--bg-start), var(--bg-end));
+        transition: --bg-start 2s, --bg-end 2s, --bg-angle 3s;
       }
       
       a {
@@ -71,7 +77,7 @@
         return '#' + values.map(v => v * 3).join('');
       }
       
-      function updateColors() {
+      function updateBackground() {
         const currentStyles = getComputedStyle(document.body);
         const currentColor = rs = currentStyles.getPropertyValue('--bg-start');
 
@@ -79,8 +85,15 @@
         document.body.style.setProperty('--bg-start', randomColor());
       }
 
-      updateColors();
-      setInterval(updateColors, 2000);
+      function updateAngle() {
+        const angle = 125 + randomInt(60);
+        document.body.style.setProperty('--bg-angle', angle + 'deg');
+      }
+
+      updateBackground();
+      updateAngle();
+      setInterval(updateBackground, 2000);
+      setInterval(updateAngle, 3000);
 
     </script>
     <section>
