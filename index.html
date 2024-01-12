@@ -8,7 +8,7 @@
       @property --bg-angle {
         syntax: "<angle>";
         inherits: false;
-        initial-value: 147deg;
+        initial-value: 145deg;
       }  
 
       @property --bg-start {
@@ -24,6 +24,8 @@
       }  
 
       body {
+        --bg-ease: linear( 0, 0.2861 18.47%, 0.4829 32.08%, 0.6437 44.52%, 0.7712 56.07%, 0.8722 67.47%, 0.9115 73.02%, 0.9434 78.49%, 0.9682 83.91%, 0.9859 89.3%, 0.9965, 1 );
+        
         align-items: center;
         color: white;
         display: flex;
@@ -31,7 +33,7 @@
         justify-content: center;
         margin: 0;
         background: linear-gradient(var(--bg-angle) in srgb, var(--bg-start), var(--bg-end));
-        transition: --bg-start 2s linear, --bg-end 2s linear, --bg-angle 3s;
+        transition: --bg-start 2s var(--bg-ease), --bg-end 2s var(--bg-ease), --bg-angle 3s;
       }
       
       a {
