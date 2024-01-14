@@ -106,6 +106,7 @@
         setCssVar('--bg-end', randomColor());
         setCssVar('--bg-angle', randomAngle());
         
+        setTimeout(updateBackground, 1000);
         setInterval(updateBackground, 2000);
         setInterval(updateAngle, 3000);
       }
