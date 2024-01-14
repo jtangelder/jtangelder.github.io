@@ -77,27 +77,40 @@
         }
         return '#' + values.map(v => v * 3).join('');
       }
+
+      function randomAngle() {
+        const angle = 125 + randomInt(60);
+        return `${angle}deg`;
+      }
+
+      function getCssVarValue(name) {
+        const styles = getComputedStyle(document.body);
+        return styles.getPropertyValue(name);
+      }
+
+      function setCssVar(name, value) {
+        document.body.style.setProperty(name, value);
+      }
       
       function updateBackground() {
-        const currentStyles = getComputedStyle(document.body);
-        const currentColor = rs = currentStyles.getPropertyValue('--bg-start');
-
-        document.body.style.setProperty('--bg-end', currentColor);
-        document.body.style.setProperty('--bg-start', randomColor());
+        setCssVar('--bg-end', getCssVarValue('--bg-start'));
+        setCssVar('--bg-start', randomColor());
       }
 
       function updateAngle() {
-        const angle = 125 + randomInt(60);
-        document.body.style.setProperty('--bg-angle', angle + 'deg');
+        setCssVar('--bg-angle', randomAngle());
       }
 
-      updateBackground();
-      updateBackground();
-      updateAngle();
-      updateAngle();
+      function init() {
+        setCssVar('--bg-start', randomColor());
+        setCssVar('--bg-end', randomColor());
+        setCssVar('--bg-angle', randomAngle());
+        
+        setInterval(updateBackground, 2000);
+        setInterval(updateAngle, 3000);
+      }
       
-      setInterval(updateBackground, 2000);
-      setInterval(updateAngle, 3000);
+      init();
 
     </script>
     <section>
