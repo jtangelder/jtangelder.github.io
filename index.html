@@ -73,12 +73,12 @@
     const cursor = ev.touches ? ev.touches[0] : ev;
     setCssVar('--x', cursor.clientX + 'px');
     setCssVar('--y', cursor.clientY + 'px');       
+    ev.preventDefault();
   }
 
   window.addEventListener('mouseover', updateXY);
   window.addEventListener('mousemove', updateXY);
-  window.addEventListener('touchmove', updateXY);
-  window.addEventListener('touchstart', ev => ev.preventDefault());
+  window.addEventListener('touchmove', updateXY, {passive: false});
 
   setRandomInterval(() => { 
     setCssVar('--bg-start', randomColor());
