@@ -1,98 +1,96 @@
+
 <html>
-  <head>
-    <title>Jorik.dev</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <style> 
+<head>
+<title>Jorik.dev</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<style> 
 
-      @property --bg-angle {
-        syntax: "<angle>";
-        inherits: false;
-        initial-value: 0deg;
-      }  
+  @property --bg-start {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #000;
+  }  
 
-      @property --bg-start {
-        syntax: "<color>";
-        inherits: false;
-        initial-value: #000;
-      }  
+  @property --bg-end {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #000;
+  }  
 
-      @property --bg-end {
-        syntax: "<color>";
-        inherits: false;
-        initial-value: #000;
-      }  
+  @property --x {
+    syntax: "<length>";
+    inherits: false;
+    initial-value: 50vw;
+  }  
 
-      body {
-        --bg-ease: linear( 0, 0.2861 18.47%, 0.4829 32.08%, 0.6437 44.52%, 0.7712 56.07%, 0.8722 67.47%, 0.9115 73.02%, 0.9434 78.49%, 0.9682 83.91%, 0.9859 89.3%, 0.9965, 1 );
-        align-items: center;
-        color: white;
-        display: flex;
-        font: 1.5em/1.6 'Quicksand', sans-serif;
-        justify-content: center;
-        margin: 0;
-        background: linear-gradient(var(--bg-angle) in srgb, var(--bg-start), var(--bg-end));
-        transition: --bg-start 2s var(--bg-ease), --bg-end 2s var(--bg-ease), --bg-angle 3s;
-      }
-            
-    </style>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TM36YMESX3"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-TM36YMESX3');
-    </script>
-  </head>
-  <body>
-    <script>
-      
-      function randomInt(max) {
-        return Math.floor(Math.random() * max);
-      }
+  @property --y {
+    syntax: "<length>";
+    inherits: false;
+    initial-value: 50vh;
+  }  
 
-      function randomColor() {
-        const values = [];
-        for (let i=0; i<3; i++) {
-          values.push(randomInt(3) + 1);
-        }
-        return '#' + values.map(v => v * 3).join('');
-      }
+  body {
+    transition: --x 1s ease-out, --y 1s ease-out, --bg-start 1s ease-in-out, --bg-end 1s ease-in-out;
+    background: radial-gradient(circle at top var(--y) left var(--x) in srgb, var(--bg-start), var(--bg-end));
+  }
+    
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TM36YMESX3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-TM36YMESX3');
+</script>
+</head>
+<body>
+<script>
 
-      function randomAngle() {
-        const angle = 125 + randomInt(60);
-        return `${angle}deg`;
-      }
+  function randomInt(max) {
+    return Math.floor(Math.random() * max); 
+  }
 
-      function getCssVarValue(name) {
-        const styles = getComputedStyle(document.body);
-        return styles.getPropertyValue(name);
-      }
+  function randomColor() {
+    const values = [];
+    for (let i=0; i<3; i++) {
+      values.push(randomInt(3) + 1);
+    }
+    return '#' + values.map(v => v * 3).join('');
+  }
 
-      function setCssVar(name, value) {
-        document.body.style.setProperty(name, value);
-      }
-      
-      function updateBackground() {
-        setCssVar('--bg-end', getCssVarValue('--bg-start'));
-        setCssVar('--bg-start', randomColor());
-      }
+  function setRandomInterval(fn, minMs, maxMs) {
+    setTimeout(() => {
+      fn();
+      setRandomInterval(fn, minMs, maxMs);
+    }, Math.max(minMs, randomInt(maxMs)));
+  }
 
-      function updateAngle() {
-        setCssVar('--bg-angle', randomAngle());
-      }
+  function setCssVar(name, value) {
+    document.body.style.setProperty(name, value);
+  }
 
-      function init() {
-        setCssVar('--bg-start', randomColor());
-        setCssVar('--bg-end', randomColor());
-        setCssVar('--bg-angle', randomAngle());
-        
-        setTimeout(updateBackground, 1000);
-        setInterval(updateBackground, 2000);
-        setInterval(updateAngle, 3000);
-      }
-      
-      init();
+  function updateXY(ev) {
+    const cursor = ev.touches ? ev.touches[0] : ev;
+    setCssVar('--x', cursor.clientX + 'px');
+    setCssVar('--y', cursor.clientY + 'px');       
+  }
 
-    </script>
-  </body>
+  window.addEventListener('mouseover', updateXY);
+  window.addEventListener('mousemove', updateXY);
+  window.addEventListener('touchmove', updateXY);
+  window.addEventListener('touchstart', ev => ev.preventDefault());
+
+  setRandomInterval(() => { 
+    setCssVar('--bg-start', randomColor());
+  }, 1000, 5000);
+
+  setRandomInterval(() => { 
+    setCssVar('--bg-end', randomColor());
+  }, 1000, 5000);
+
+  setCssVar('--bg-start', randomColor());
+  setCssVar('--bg-end', randomColor());
+
+</script>
+</body>
 </html>
